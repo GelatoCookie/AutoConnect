@@ -173,10 +173,18 @@ public class MainActivity extends AppCompatActivity implements RFIDHandler.Respo
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if(requestCode == BLUETOOTH_PERMISSION_REQUEST_CODE){
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+        if (requestCode == BLUETOOTH_PERMISSION_REQUEST_CODE) {
+            boolean allGranted = true;
+            for (int result : grantResults) {
+                if (result != PackageManager.PERMISSION_GRANTED) {
+                    allGranted = false;
+                    break;
+                }
+            }
+            if (allGranted) {
                 if (rfidHandler == null) rfidHandler = new RFIDHandler();
                 rfidHandler.onCreate(this);
+                requestPermission(null);
             } else {
                 makeText(this, R.string.bluetooth_permission_not_granted, LENGTH_SHORT).show();
             }
@@ -187,15 +195,59 @@ public class MainActivity extends AppCompatActivity implements RFIDHandler.Respo
     private final BroadcastReceiver usbReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            if(SLED_ZEBRA_ATTACHED.equals(action)){
+            if (SLED_ZEBRA_ATTACHED.equals(action)) {
                 if (rfidHandler != null) rfidHandler.onDestroy();
                 InitRfidSDK();
             } else if (SLED_ZEBRA_DETACHED.equals(action)) {
                 if (rfidHandler != null) rfidHandler.onDestroy();
                 bt_usb_connect();
+            } else if (ACTION_USB_PERMISSION.equals(action)) {
+                synchronized (this) {
+                    UsbDevice device = IntentCompat.getParcelableExtra(intent, UsbManager.EXTRA_DEVICE, UsbDevice.class);
+                    if (intent.getBooleanExtra(UsbManager.EXTRA_PERMISSION_GRANTED, false)) {
+                        if (device != null && isRfidVendorDevice(device.getVendorId())) {
+                            InitRfidSDK();
+                        }
+                    }
+                }
             }
         }
     };
+
+    public boolean isRfidVendorDevice(int vendorId) {
+        return vendorId == RFID_VID;
+    }
+
+    public void runAutoConnectDisconnectCycles(int repeatCount) {
+        runAsyncTask(() -> {
+            for (int i = 0; i < repeatCount; i++) {
+                postToUiThread(() -> {
+                    if (rfidHandler != null) rfidHandler.onDestroy();
+                });
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    break;
+                }
+                postToUiThread(this::InitRfidSDK);
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    break;
+                }
+            }
+        });
+    }
+
+    private void runAsyncTask(Runnable action) {
+        new Thread(action).start();
+    }
+
+    private void postToUiThread(Runnable action) {
+        runOnUiThread(action);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

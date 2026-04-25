@@ -6,9 +6,9 @@
     <string name="Defaults">Defaults</string>
     <string name="Connect">Connect</string>
     <string name="Disconnect">Disconnect</string>
-    <string name="TestConnectDisconectLoop">Test Connection Loop</string>
+    <string name="TestConnectDisconnectLoop">Test Connection Loop</string>
     <string name="dialog_connection_title">Select Connection</string>
-    <string name="dialog_connection_message">Choose Bluetooth Interface to connect (if paired and RFD40 de-attach)\n\nOr wait for USB attach or press trigger to wake up RFID Reader (RFD40 attached).</string>
+    <string name="dialog_connection_message">Choose Bluetooth interface to connect (if paired and RFD40 detached)\n\nOr wait for USB attachment or press trigger to wake up RFID Reader (RFD40 attached).</string>
     <string name="dialog_button_bluetooth">Bluetooth</string>
     <string name="dialog_button_wait_usb">Wait for USB</string>
     <string name="bluetooth_permission_not_granted">Bluetooth permissions not granted</string>

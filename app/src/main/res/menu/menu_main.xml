@@ -14,7 +14,7 @@
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/TestConnectDisconectLoop"
-        android:title="@string/TestConnectDisconectLoop"
+        android:id="@+id/TestConnectDisconnectLoop"
+        android:title="@string/TestConnectDisconnectLoop"
         app:showAsAction="never" />
 </menu>

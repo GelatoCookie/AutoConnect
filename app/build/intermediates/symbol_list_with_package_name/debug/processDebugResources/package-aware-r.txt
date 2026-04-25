@@ -1847,7 +1847,7 @@ id TOP_END
 id TOP_START
 id TestButton
 id TestButton2
-id TestConnectDisconectLoop
+id TestConnectDisconnectLoop
 id accelerate
 id accessibility_action_clickable_span
 id accessibility_custom_action_0
@@ -2464,7 +2464,7 @@ string Connect
 string Defaults
 string Disconnect
 string Singulation_control
-string TestConnectDisconectLoop
+string TestConnectDisconnectLoop
 string abc_action_bar_home_description
 string abc_action_bar_up_description
 string abc_action_menu_overflow_description
@@ -2604,6 +2604,9 @@ string path_password_eye
 string path_password_eye_mask_strike_through
 string path_password_eye_mask_visible
 string path_password_strike_through
+string preferred_bt_reader_prefix
+string preferred_rfd8500_reader_prefix
+string preferred_usb_reader_prefix
 string rfid_status_label
 string search_menu_title
 string start_inventory
