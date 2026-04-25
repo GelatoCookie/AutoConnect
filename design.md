@@ -10,11 +10,12 @@ This document describes the implemented architecture and runtime behavior for US
 
 ## 2. Runtime Architecture
 - `MainActivity`
-  - Owns UI state, the reconnect dialog, and the USB broadcast receiver.
-  - Registers the receiver in `onStart` and unregisters it in `onStop` and `onDestroy`.
-  - Validates Android 12+ Bluetooth runtime permissions before RFID init continues.
-  - Requests USB permission for Zebra vendor ID `1504` when a matching device is already attached.
-  - Triggers SDK re-init (`InitRfidSDK`) on approved connection transitions.
+    - Owns UI state, the reconnect dialog, the USB broadcast receiver, and the inventory progress indicator.
+    - Registers the receiver in `onStart` and unregisters it in `onStop` and `onDestroy`.
+    - Validates Android 12+ Bluetooth runtime permissions before RFID init continues.
+    - Requests USB permission for Zebra vendor ID `1504` when a matching device is already attached.
+    - Triggers SDK re-init (`InitRfidSDK`) on approved connection transitions.
+    - Manages `inventoryProgress` (ProgressBar) visibility based on SDK inventory events.
 - `RFIDHandler`
   - Owns Zebra `Readers`, selected `ReaderDevice`, active `RFIDReader`, and event lifecycle.
   - Performs async discovery, connect, and event-side work with explicit background threads plus UI handoff where needed.
@@ -46,7 +47,7 @@ After connection, the following are enabled:
 - Handheld trigger events
 - Tag read events
 - Reader disconnect events
-- Inventory start/stop status events
+- Inventory start/stop status events: These events trigger the `inventoryProgress` ProgressBar visibility in `MainActivity`.
 
 ### 3.3 Disconnect Recovery
 - On reader disappeared or disconnect events, the handler disconnects/disposes and prompts the user with a Bluetooth-or-USB decision dialog.
