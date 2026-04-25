@@ -11,7 +11,7 @@ This application demonstrates how to use the Zebra RFID SDK to connect to RFID r
 -   **Android 14 Ready**: Includes required `RECEIVER_EXPORTED` flags and SDK-level receiver interception to prevent `SecurityException` on API 34+.
 
 ## Getting Started
-1.  Clone the repository.
+1.  Clone the repository: `git clone https://github.com/GelatoCookie/AutoConnect.git`
 2.  Open in Android Studio.
 3.  Build and run on a Zebra device (e.g., TC22) or any Android device with Zebra RFID sleds.
 
