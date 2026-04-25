@@ -15,6 +15,14 @@
     <string name="no_usb_devices_detected">No USB devices detected</string>
     <string name="usb_permission_granted">Permission granted</string>
     <string name="usb_permission_denied">Permission denied</string>
+    <string name="connecting_message">Connecting to RFID reader...</string>
+    <string name="switching_to_bluetooth">Switching interface to Bluetooth...</string>
+
+    <string name="bluetooth_connect_failed">Bluetooth connection failed. Please ensure the device is paired and in range.</string>
+    <string name="dialog_pair_title">Pairing Required</string>
+    <string name="dialog_pair_message">Bluetooth connection failed. Would you like to open Bluetooth settings to pair your RFID reader?</string>
+    <string name="dialog_button_pair">Pair</string>
+    <string name="dialog_button_cancel">Cancel</string>
 
     <string name="rfid_status_label">RFID Status</string>
     <string name="status_disconnected">Disconnected</string>

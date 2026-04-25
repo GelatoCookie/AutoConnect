@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:ns1="http://schemas.android.com/tools">
+    <color name="accent">#00BCD4</color>
+    <color name="background">#FFFFFF</color>
+    <color name="black">#FF000000</color>
+    <color name="on_surface">#202124</color>
+    <color name="on_surface_variant">#5F6368</color>
+    <color name="primary">#2196F3</color>
+    <color name="primary_dark">#1976D2</color>
+    <color name="status_connected">#4CAF50</color>
+    <color name="status_disconnected">#F44336</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="white">#FFFFFFFF</color>
+    <dimen name="fab_margin">16dp</dimen>
+    <string name="Connect">Connect</string>
+    <string name="Defaults">Defaults</string>
+    <string name="Disconnect">Disconnect</string>
+    <string name="Singulation_control">Singulation Control</string>
+    <string name="TestConnectDisconnectLoop">Test Connection Loop</string>
+    <string name="action_settings">Settings</string>
+    <string name="antenna_settings">Antenna Settings</string>
+    <string name="app_name">RFID AutoConnect</string>
+    <string name="bluetooth_connect_failed">Bluetooth connection failed. Please ensure the device is paired and in range.</string>
+    <string name="bluetooth_permission_not_granted">Bluetooth permissions not granted</string>
+    <string name="connecting_message">Connecting to RFID reader...</string>
+    <string name="dialog_button_bluetooth">Bluetooth</string>
+    <string name="dialog_button_cancel">Cancel</string>
+    <string name="dialog_button_pair">Pair</string>
+    <string name="dialog_button_wait_usb">Wait for USB</string>
+    <string name="dialog_connection_message">Choose Bluetooth interface to connect (if paired and RFD40 detached)\n\nOr wait for USB attachment or press trigger to wake up RFID Reader (RFD40 attached).</string>
+    <string name="dialog_connection_title">Select Connection</string>
+    <string name="dialog_pair_message">Bluetooth connection failed. Would you like to open Bluetooth settings to pair your RFID reader?</string>
+    <string name="dialog_pair_title">Pairing Required</string>
+    <string name="no_usb_devices_detected">No USB devices detected</string>
+    <string name="preferred_bt_reader_prefix">RFD40+_211545201D0011</string>
+    <string name="preferred_rfd8500_reader_prefix">RFD8500161755230D5038</string>
+    <string name="preferred_usb_reader_prefix">RFD4031-G10B700-US</string>
+    <string name="rfid_status_label">RFID Status</string>
+    <string name="start_inventory">Start</string>
+    <string name="status_disconnected">Disconnected</string>
+    <string name="stop_inventory">Stop</string>
+    <string name="switching_to_bluetooth">Switching interface to Bluetooth...</string>
+    <string name="tag_count_format">Count: %1$d</string>
+    <string name="tag_rssi_format">RSSI: %1$d</string>
+    <string name="usb_permission_denied">Permission denied</string>
+    <string name="usb_permission_granted">Permission granted</string>
+    <style name="Theme.AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
+        
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryVariant">@color/primary_dark</item>
+        <item name="colorOnPrimary">@color/white</item>
+        
+        <item name="colorSecondary">@color/accent</item>
+        <item name="colorSecondaryVariant">@color/accent</item>
+        <item name="colorOnSecondary">@color/black</item>
+        
+        <item name="android:statusBarColor" ns1:targetApi="l">?attr/colorPrimaryVariant</item>
+        
+    </style>
+</resources>

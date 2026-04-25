@@ -1,0 +1,7 @@
+com.zebra.rfid.demo.sdksample.app-pngs-0 /Users/chucklin/StudioProjects/63_TC22AutoConnect/AutoConnect/AutoConnect/app/build/generated/res/pngs/debug
+com.zebra.rfid.demo.sdksample.app-updated_navigation_xml-1 /Users/chucklin/StudioProjects/63_TC22AutoConnect/AutoConnect/AutoConnect/app/build/generated/updated_navigation_xml/debug
+com.zebra.rfid.demo.sdksample.app-packageDebugResources-2 /Users/chucklin/StudioProjects/63_TC22AutoConnect/AutoConnect/AutoConnect/app/build/intermediates/incremental/debug/packageDebugResources/merged.dir
+com.zebra.rfid.demo.sdksample.app-packageDebugResources-3 /Users/chucklin/StudioProjects/63_TC22AutoConnect/AutoConnect/AutoConnect/app/build/intermediates/incremental/debug/packageDebugResources/stripped.dir
+com.zebra.rfid.demo.sdksample.app-debug-4 /Users/chucklin/StudioProjects/63_TC22AutoConnect/AutoConnect/AutoConnect/app/build/intermediates/merged_res/debug/mergeDebugResources
+com.zebra.rfid.demo.sdksample.app-debug-5 /Users/chucklin/StudioProjects/63_TC22AutoConnect/AutoConnect/AutoConnect/app/src/debug/res
+com.zebra.rfid.demo.sdksample.app-main-6 /Users/chucklin/StudioProjects/63_TC22AutoConnect/AutoConnect/AutoConnect/app/src/main/res

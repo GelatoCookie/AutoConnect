@@ -72,6 +72,7 @@ public class MainActivity extends AppCompatActivity implements RFIDHandler.Respo
     private boolean usbReceiverRegistered = false;
     private Boolean bluetoothPermissionOverrideForTests = null;
     private AlertDialog connectionDialog;
+    private AlertDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,7 +136,8 @@ public class MainActivity extends AppCompatActivity implements RFIDHandler.Respo
         filter.addAction(SLED_ZEBRA_ATTACHED);
         filter.addAction(SLED_ZEBRA_DETACHED);
         filter.addAction(ACTION_USB_PERMISSION);
-        registerReceiver(usbReceiver, filter);
+        // Use RECEIVER_EXPORTED for Zebra SDK compatibility as it may receive broadcasts from Zebra RFID Service
+        ContextCompat.registerReceiver(this, usbReceiver, filter, ContextCompat.RECEIVER_EXPORTED);
         usbReceiverRegistered = true;
     }
 
@@ -149,13 +151,28 @@ public class MainActivity extends AppCompatActivity implements RFIDHandler.Respo
 
     private boolean ensureBluetoothPermissionsForRfidInit() {
         if (bluetoothPermissionOverrideForTests != null) return bluetoothPermissionOverrideForTests;
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) return true;
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_SCAN) == PackageManager.PERMISSION_GRANTED &&
-            ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_GRANTED) {
+        
+        List<String> permissionsNeeded = new ArrayList<>();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_SCAN) != PackageManager.PERMISSION_GRANTED) {
+                permissionsNeeded.add(Manifest.permission.BLUETOOTH_SCAN);
+            }
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
+                permissionsNeeded.add(Manifest.permission.BLUETOOTH_CONNECT);
+            }
+        }
+        
+        // Location is often needed for Bluetooth discovery on older Android versions or some SDKs
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            permissionsNeeded.add(Manifest.permission.ACCESS_FINE_LOCATION);
+        }
+
+        if (permissionsNeeded.isEmpty()) {
             return true;
         }
+
         ActivityCompat.requestPermissions(this,
-            new String[]{Manifest.permission.BLUETOOTH_SCAN, Manifest.permission.BLUETOOTH_CONNECT},
+            permissionsNeeded.toArray(new String[0]),
             BLUETOOTH_PERMISSION_REQUEST_CODE);
         return false;
     }
@@ -261,7 +278,11 @@ public class MainActivity extends AppCompatActivity implements RFIDHandler.Respo
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
             builder.setTitle(R.string.dialog_connection_title)
                    .setMessage(R.string.dialog_connection_message)
-                   .setPositiveButton(R.string.dialog_button_bluetooth, (dialog, which) -> scheduleRfidInit(5000L))
+                   .setPositiveButton(R.string.dialog_button_bluetooth, (dialog, which) -> {
+                       updateStatus(getString(R.string.switching_to_bluetooth));
+                       sendToast(getString(R.string.switching_to_bluetooth));
+                       scheduleRfidInit(500L);
+                   })
                    .setNegativeButton(R.string.dialog_button_wait_usb, (dialog, which) -> dialog.dismiss())
                    .setCancelable(false);
             connectionDialog = builder.create();
@@ -357,6 +378,24 @@ public class MainActivity extends AppCompatActivity implements RFIDHandler.Respo
         if (rfidHandler != null) {
             rfidHandler.onDestroy();
             rfidHandler = null;
+        }
+    }
+
+    @Override
+    public Intent registerReceiver(BroadcastReceiver receiver, IntentFilter filter) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            return super.registerReceiver(receiver, filter, Context.RECEIVER_EXPORTED);
+        } else {
+            return super.registerReceiver(receiver, filter);
+        }
+    }
+
+    @Override
+    public Intent registerReceiver(BroadcastReceiver receiver, IntentFilter filter, String broadcastPermission, Handler scheduler) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            return super.registerReceiver(receiver, filter, broadcastPermission, scheduler, Context.RECEIVER_EXPORTED);
+        } else {
+            return super.registerReceiver(receiver, filter, broadcastPermission, scheduler);
         }
     }
 
@@ -494,6 +533,48 @@ public class MainActivity extends AppCompatActivity implements RFIDHandler.Respo
                     btn.setEnabled(true);
                     btn.setText(R.string.start_inventory);
                 }
+            }
+        });
+    }
+
+    @Override
+    public void onBluetoothConnectionFailed() {
+        runOnUiThread(() -> {
+            new AlertDialog.Builder(MainActivity.this)
+                    .setTitle(R.string.dialog_pair_title)
+                    .setMessage(R.string.dialog_pair_message)
+                    .setPositiveButton(R.string.dialog_button_pair, (dialog, which) -> {
+                        Intent intent = new Intent(android.provider.Settings.ACTION_BLUETOOTH_SETTINGS);
+                        startActivity(intent);
+                    })
+                    .setNegativeButton(R.string.dialog_button_cancel, (dialog, which) -> dialog.dismiss())
+                    .show();
+        });
+    }
+
+    @Override
+    public void showProgressDialog(String message) {
+        runOnUiThread(() -> {
+            if (progressDialog != null && progressDialog.isShowing()) {
+                progressDialog.setMessage(message);
+                return;
+            }
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage(message);
+            View view = getLayoutInflater().inflate(R.layout.dialog_progress, null);
+            builder.setView(view);
+            builder.setCancelable(false);
+            progressDialog = builder.create();
+            progressDialog.show();
+        });
+    }
+
+    @Override
+    public void dismissProgressDialog() {
+        runOnUiThread(() -> {
+            if (progressDialog != null && progressDialog.isShowing()) {
+                progressDialog.dismiss();
+                progressDialog = null;
             }
         });
     }

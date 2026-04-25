@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.zebra.rfid.demo.sdksample.app-mergeDebugResources-26:/values-h480dp-land-v13/values-h480dp-land-v13.xml",
+            "outputFile": "com.zebra.rfid.demo.sdksample.app-mergeDebugResources-45:/values-h480dp-land-v13/values-h480dp-land-v13.xml",
             "map": [
                 {
-                    "source": "/Users/chucklin/.gradle/caches/8.13/transforms/4a5299691c2e44b08b4fb970b33e6be0/transformed/material-1.4.0/res/values-h480dp-land-v13/values-h480dp-land-v13.xml",
+                    "source": "/Users/chucklin/.gradle/caches/9.3.1/transforms/17caae7968bab98934c3eeaa4626650d/transformed/material-1.12.0/res/values-h480dp-land-v13/values-h480dp-land-v13.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10",
                         "startColumns": "4,4,4,4,4,4,4,4,4",

@@ -191,30 +191,29 @@ class RFIDHandler implements IDcsSdkApiDelegate, Readers.RFIDReaderEventHandler 
     private void initializeReaders() {
         Log.d(TAG, "CreateInstanceTask");
 
-        InvalidUsageException invalidUsageException = null;
-        readers = new Readers(context, ENUM_TRANSPORT.SERVICE_USB);
-        currentTransport = ENUM_TRANSPORT.SERVICE_USB;
+        if (readers == null) {
+            readers = new Readers(context, ENUM_TRANSPORT.SERVICE_USB);
+            currentTransport = ENUM_TRANSPORT.SERVICE_USB;
+        }
+
         try {
             availableRFIDReaderList = readers.GetAvailableRFIDReaderList();
             Log.d(TAG, "availableRFIDReaderList USB Size=" + (availableRFIDReaderList == null ? 0 : availableRFIDReaderList.size()));
         } catch (InvalidUsageException e) {
-            invalidUsageException = e;
             e.printStackTrace();
         }
 
-        if (invalidUsageException != null || !hasAvailableReaders()) {
-            Log.d(TAG, "ERR: Dispose readers");
+        if (!hasAvailableReaders()) {
+            Log.d(TAG, "No USB readers, trying Bluetooth");
             dispose();
-            if (readers == null) {
-                readers = new Readers(context, ENUM_TRANSPORT.BLUETOOTH);
-                currentTransport = ENUM_TRANSPORT.BLUETOOTH;
+            readers = new Readers(context, ENUM_TRANSPORT.BLUETOOTH);
+            currentTransport = ENUM_TRANSPORT.BLUETOOTH;
 
-                try {
-                    availableRFIDReaderList = readers.GetAvailableRFIDReaderList();
-                } catch (InvalidUsageException e) {
-                    e.printStackTrace();
-                }
+            try {
+                availableRFIDReaderList = readers.GetAvailableRFIDReaderList();
                 Log.d(TAG, "availableRFIDReaderList BT Size=" + (availableRFIDReaderList == null ? 0 : availableRFIDReaderList.size()));
+            } catch (InvalidUsageException e) {
+                e.printStackTrace();
             }
         }
     }
@@ -222,10 +221,14 @@ class RFIDHandler implements IDcsSdkApiDelegate, Readers.RFIDReaderEventHandler 
     private synchronized void connectReader(){
         if(!isReaderConnected() ) {
             Log.d(TAG, "NO Connection: ConnectionTask...");
+            context.showProgressDialog(null);
             connectReaderAsync();
         }
-        else
+        else {
             Log.d(TAG, "Connected; skip connectReader() method");
+            context.dismissProgressDialog();
+            context.dismissConnectionDialog();
+        }
     }
 
     private void connectReaderAsync() {
@@ -243,7 +246,15 @@ class RFIDHandler implements IDcsSdkApiDelegate, Readers.RFIDReaderEventHandler 
             }
 
             String result = reader != null ? connectMethod() : "Failed to find or connect reader\nMake sure reader is powered on and connected to USB or Bluetooth paired";
-            postToUiThread(() -> textView.setText(result));
+            postToUiThread(() -> {
+                textView.setText(result);
+                if (reader == null) {
+                    context.dismissProgressDialog();
+                }
+                if (reader == null && currentTransport == ENUM_TRANSPORT.BLUETOOTH) {
+                    context.onBluetoothConnectionFailed();
+                }
+            });
         });
     }
 
@@ -366,6 +377,7 @@ class RFIDHandler implements IDcsSdkApiDelegate, Readers.RFIDReaderEventHandler 
                     configureReader(connectTimeMillis);
 
                     if(reader.isConnected()){
+                        context.dismissProgressDialog();
                         context.dismissConnectionDialog();
                         context.sendToast("Connected, Time=" + connectTimeMillis + " ms");
                         return "Connected: " + reader.getHostName() + ". Time=" + connectTimeMillis + " ms";
@@ -374,19 +386,23 @@ class RFIDHandler implements IDcsSdkApiDelegate, Readers.RFIDReaderEventHandler 
                 else{
                     Log.d(TAG, "Already Connected");
                     updateTransportFlagsFromReader();
+                    context.dismissProgressDialog();
                     context.dismissConnectionDialog();
                     context.sendToast("Connected: " + reader.getHostName());
                     return "Connected: " + reader.getHostName();
                 }
 
             } catch (InvalidUsageException e) {
+                context.dismissProgressDialog();
                 e.printStackTrace();
             } catch (OperationFailureException e) {
+                context.dismissProgressDialog();
                 e.printStackTrace();
                 Log.d(TAG, "OperationFailureException " + e.getVendorMessage());
                 String des = e.getResults().toString();
                 return "Connection failed" + e.getVendorMessage() + " " + des;
             } catch (SecurityException e) {
+                context.dismissProgressDialog();
                 Log.e(TAG, "SecurityException while connecting reader", e);
                 return "Connection failed: Bluetooth permissions missing";
             }
@@ -715,12 +731,13 @@ class RFIDHandler implements IDcsSdkApiDelegate, Readers.RFIDReaderEventHandler 
 
         private void handleBluetoothDisconnection() {
             runAsyncTask(() -> {
-                String disappearedName = readerDevice != null ? readerDevice.getName() : "unknown";
-                Log.d(TAG, "BLUETOOTH DISCONNECTION_EVENT " + disappearedName);
-                context.sendToast("BLUETOOTH DISCONNECTION_EVENT");
+                Log.d(TAG, "BLUETOOTH DISCONNECTION_EVENT");
+                context.sendToast("Bluetooth Disconnected. Switching to USB interface...");
                 onDestroy();
-                context.sendStatusText("Bluetooth Reader Disconnected\nReconnect battery or re-attach RFD40\nClick settings to connect");
-                context.bt_usb_connect();
+                postToUiThread(() -> {
+                    context.updateStatus("Bluetooth Disconnected\nSwitching to USB interface...");
+                    context.InitRfidSDK();
+                });
             });
         }
     }
@@ -734,6 +751,11 @@ class RFIDHandler implements IDcsSdkApiDelegate, Readers.RFIDReaderEventHandler 
         void sendToast(String val);
 
         void inventoryStartEvent(boolean started);
+
+        void onBluetoothConnectionFailed();
+
+        void showProgressDialog(String message);
+        void dismissProgressDialog();
     }
 
 }
