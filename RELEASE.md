@@ -1,5 +1,33 @@
 # Release Notes
 
+## v0.0.4 (2024-05-23)
+
+- Title: Android 14 compatibility and Location permission support
+
+### Highlights
+
+- Fixed `java.lang.SecurityException` on Android 14 by overriding `registerReceiver` to inject `RECEIVER_EXPORTED` flag.
+- Added support for `ACCESS_FINE_LOCATION` and `ACCESS_COARSE_LOCATION` permissions required for Bluetooth discovery on newer Android versions.
+- Updated `usbReceiver` to use explicit `RECEIVER_EXPORTED` flags.
+- Improved connection flow with a new progress dialog and refined runtime permission handling.
+
+### Technical Changes
+
+- Main logic:
+  - `app/src/main/java/com/zebra/rfid/demo/sdksample/MainActivity.java`
+  - `app/src/main/java/com/zebra/rfid/demo/sdksample/RFIDHandler.java`
+- Manifest:
+  - `app/src/main/AndroidManifest.xml`
+- Resources:
+  - `app/src/main/res/values/strings.xml`
+  - `app/src/main/res/layout/dialog_progress.xml` (New)
+
+### Validation Summary
+
+- Verified SDK initialization on Android 14 device (TC22).
+- Confirmed location permission request flow.
+- Successfully connected to RFID reader via USB and Bluetooth after permission grants.
+
 ## v0.0.3 (2026-04-21)
 
 - Title: Startup permission recovery, pre-check-in cleanup, release prep
