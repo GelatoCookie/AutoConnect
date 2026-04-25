@@ -58,11 +58,10 @@ class RFIDHandler implements IDcsSdkApiDelegate, Readers.RFIDReaderEventHandler 
     private int maxPower = 270;
     private volatile boolean bIsReading = false;
 
-    // In case of RFD8500 change reader name with intended device below from list of paired RFD8500
     // If barcode scan is available in RFD8500, for barcode scanning change mode using mode button on RFD8500 device. By default it is set to RFID mode
-    String readerNamebt = "RFD40+_211545201D0011";
-    String readerName = "RFD4031-G10B700-US";
-    String readerNameRfd8500 = "RFD8500161755230D5038";
+    private String readerNamebt;
+    private String readerName;
+    private String readerNameRfd8500;
     private ENUM_TRANSPORT currentTransport = ENUM_TRANSPORT.SERVICE_USB;
     private static volatile boolean bIsBTReader = false;
 
@@ -77,6 +76,12 @@ class RFIDHandler implements IDcsSdkApiDelegate, Readers.RFIDReaderEventHandler 
         textView = activity.getStatusTextViewRFID();
         scannerList = new ArrayList<>();
         Log.d(TAG, "RFIDHandler onCreate");
+
+        // Load preferred reader names from resources
+        readerNamebt = context.getString(R.string.preferred_bt_reader_prefix);
+        readerName = context.getString(R.string.preferred_usb_reader_prefix);
+        readerNameRfd8500 = context.getString(R.string.preferred_rfd8500_reader_prefix);
+
         InitSDK();
     }
 
@@ -391,32 +396,28 @@ class RFIDHandler implements IDcsSdkApiDelegate, Readers.RFIDReaderEventHandler 
 
     private void configureReader(long connectTimeMillis) {
         Log.d(TAG, "ConfigureReader " + reader.getHostName());
-        if (reader.isConnected()) {
-            try {
-                // receive events from reader
-                if (eventHandler == null)
-                    eventHandler = new EventHandler();
-                reader.Events.addEventsListener(eventHandler);
-                // HH event
-                reader.Events.setHandheldEvent(true);
-                // tag event with tag data
-                reader.Events.setTagReadEvent(true);
-                reader.Events.setAttachTagDataWithReadEvent(false);
+        if (!reader.isConnected()) return;
 
-                //ECRT
-                reader.Events.setReaderDisconnectEvent(true);
-
-                reader.Events.setInventoryStartEvent(true);
-                reader.Events.setInventoryStopEvent(true);
-                bIsReading = false;
-
-                playConnectTone();
-                context.sendStatusText("Congiure Reader " + reader.getHostName() + "\nConnect Time=" + connectTimeMillis + " ms");
-
-            } catch (InvalidUsageException | OperationFailureException e) {
-                e.printStackTrace();
-            }
+        try {
+            setupEvents();
+            playConnectTone();
+            context.sendStatusText("Congiure Reader " + reader.getHostName() + "\nConnect Time=" + connectTimeMillis + " ms");
+        } catch (InvalidUsageException | OperationFailureException e) {
+            e.printStackTrace();
         }
+    }
+
+    private void setupEvents() throws InvalidUsageException, OperationFailureException {
+        if (eventHandler == null)
+            eventHandler = new EventHandler();
+        reader.Events.addEventsListener(eventHandler);
+        reader.Events.setHandheldEvent(true);
+        reader.Events.setTagReadEvent(true);
+        reader.Events.setAttachTagDataWithReadEvent(false);
+        reader.Events.setReaderDisconnectEvent(true);
+        reader.Events.setInventoryStartEvent(true);
+        reader.Events.setInventoryStopEvent(true);
+        bIsReading = false;
     }
 
     private boolean sleepAfterTone(long millis) {
@@ -678,23 +679,25 @@ class RFIDHandler implements IDcsSdkApiDelegate, Readers.RFIDReaderEventHandler 
             STATUS_EVENT_TYPE statusEventType = rfidStatusEvents.StatusEventData.getStatusEventType();
             Log.d(TAG, "Status Notification: " + statusEventType);
 
-            if (statusEventType == STATUS_EVENT_TYPE.INVENTORY_START_EVENT) {
-                bIsReading = true;
-                context.inventoryStartEvent(true);
+            switch (statusEventType) {
+                case INVENTORY_START_EVENT:
+                    handleInventoryEvent(true);
+                    break;
+                case INVENTORY_STOP_EVENT:
+                    handleInventoryEvent(false);
+                    break;
+                case HANDHELD_TRIGGER_EVENT:
+                    handleTriggerEvent(rfidStatusEvents);
+                    break;
+                case DISCONNECTION_EVENT:
+                    if (bIsBTReader) handleBluetoothDisconnection();
+                    break;
             }
-            if (statusEventType == STATUS_EVENT_TYPE.INVENTORY_STOP_EVENT) {
-                bIsReading = false;
-                context.inventoryStartEvent(false);
-            }
+        }
 
-            if (statusEventType == STATUS_EVENT_TYPE.HANDHELD_TRIGGER_EVENT) {
-                handleTriggerEvent(rfidStatusEvents);
-            }
-
-            if (statusEventType == STATUS_EVENT_TYPE.DISCONNECTION_EVENT && bIsBTReader) {
-                handleBluetoothDisconnection();
-            }
-
+        private void handleInventoryEvent(boolean started) {
+            bIsReading = started;
+            context.inventoryStartEvent(started);
         }
 
         private void handleTriggerEvent(RfidStatusEvents rfidStatusEvents) {

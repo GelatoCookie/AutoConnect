@@ -232,13 +232,15 @@ public class MainActivity extends AppCompatActivity implements RFIDHandler.Respo
 
     private void updateStatusColor(TextView tv, String status) {
         String lower = status.toLowerCase();
+        int colorResId;
         if (lower.contains("connected") && !lower.contains("not") && !lower.contains("fail")) {
-            tv.setTextColor(ContextCompat.getColor(this, R.color.status_connected));
+            colorResId = R.color.status_connected;
         } else if (lower.contains("disconnected") || lower.contains("fail")) {
-            tv.setTextColor(ContextCompat.getColor(this, R.color.status_disconnected));
+            colorResId = R.color.status_disconnected;
         } else {
-            tv.setTextColor(ContextCompat.getColor(this, R.color.on_surface));
+            colorResId = R.color.on_surface;
         }
+        tv.setTextColor(ContextCompat.getColor(this, colorResId));
     }
 
     private void scheduleRfidInit(long delayMillis) {
@@ -321,21 +323,25 @@ public class MainActivity extends AppCompatActivity implements RFIDHandler.Respo
     public void handleTagdata(TagData[] tagData) {
         runOnUiThread(() -> {
             for (TagData tagDatum : tagData) {
-                String tagID = tagDatum.getTagID();
-                if (tagMap.containsKey(tagID)) {
-                    TagItem item = tagMap.get(tagID);
-                    if (item != null) {
-                        item.incrementCount();
-                        item.setRssi(tagDatum.getPeakRSSI());
-                    }
-                } else {
-                    TagItem newItem = new TagItem(tagID, tagDatum.getPeakRSSI());
-                    tagMap.put(tagID, newItem);
-                    tagList.add(newItem);
-                }
+                updateOrAddTag(tagDatum);
             }
             adapter.notifyDataSetChanged();
         });
+    }
+
+    private void updateOrAddTag(TagData tagDatum) {
+        String tagID = tagDatum.getTagID();
+        if (tagMap.containsKey(tagID)) {
+            TagItem item = tagMap.get(tagID);
+            if (item != null) {
+                item.incrementCount();
+                item.setRssi(tagDatum.getPeakRSSI());
+            }
+        } else {
+            TagItem newItem = new TagItem(tagID, tagDatum.getPeakRSSI());
+            tagMap.put(tagID, newItem);
+            tagList.add(newItem);
+        }
     }
 
     @Override

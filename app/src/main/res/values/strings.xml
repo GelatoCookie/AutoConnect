@@ -22,4 +22,9 @@
     <string name="stop_inventory">Stop</string>
     <string name="tag_count_format">Count: %1$d</string>
     <string name="tag_rssi_format">RSSI: %1$d</string>
+
+    <!-- Reader Configuration -->
+    <string name="preferred_bt_reader_prefix">RFD40+_211545201D0011</string>
+    <string name="preferred_usb_reader_prefix">RFD4031-G10B700-US</string>
+    <string name="preferred_rfd8500_reader_prefix">RFD8500161755230D5038</string>
 </resources>
