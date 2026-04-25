@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">RFID AutoConnect</string>
+    <string name="action_settings">Settings</string>
+    <string name="antenna_settings">Antenna Settings</string>
+    <string name="Singulation_control">Singulation Control</string>
+    <string name="Defaults">Defaults</string>
+    <string name="Connect">Connect</string>
+    <string name="Disconnect">Disconnect</string>
+    <string name="TestConnectDisconectLoop">Test Connection Loop</string>
+    <string name="dialog_connection_title">Select Connection</string>
+    <string name="dialog_connection_message">Choose Bluetooth Interface to connect (if paired and RFD40 de-attach)\n\nOr wait for USB attach or press trigger to wake up RFID Reader (RFD40 attached).</string>
+    <string name="dialog_button_bluetooth">Bluetooth</string>
+    <string name="dialog_button_wait_usb">Wait for USB</string>
+    <string name="bluetooth_permission_not_granted">Bluetooth permissions not granted</string>
+    <string name="no_usb_devices_detected">No USB devices detected</string>
+    <string name="usb_permission_granted">Permission granted</string>
+    <string name="usb_permission_denied">Permission denied</string>
+
+    <string name="rfid_status_label">RFID Status</string>
+    <string name="status_disconnected">Disconnected</string>
+    <string name="start_inventory">Start</string>
+    <string name="stop_inventory">Stop</string>
+    <string name="tag_count_format">Count: %1$d</string>
+    <string name="tag_rssi_format">RSSI: %1$d</string>
+</resources>

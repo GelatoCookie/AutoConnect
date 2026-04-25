@@ -1,0 +1,101 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.zebra.rfid.demo.sdksample"
+4    android:versionCode="1"
+5    android:versionName="1.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="26"
+9        android:targetSdkVersion="33" />
+10
+11    <uses-permission android:name="android.permission.BLUETOOTH" />
+11-->/Users/chucklin/StudioProjects/63_TC22AutoConnect/AutoConnect/AutoConnect/app/src/main/AndroidManifest.xml:5:5-68
+11-->/Users/chucklin/StudioProjects/63_TC22AutoConnect/AutoConnect/AutoConnect/app/src/main/AndroidManifest.xml:5:22-65
+12    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+12-->/Users/chucklin/StudioProjects/63_TC22AutoConnect/AutoConnect/AutoConnect/app/src/main/AndroidManifest.xml:6:5-74
+12-->/Users/chucklin/StudioProjects/63_TC22AutoConnect/AutoConnect/AutoConnect/app/src/main/AndroidManifest.xml:6:22-71
+13    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+13-->/Users/chucklin/StudioProjects/63_TC22AutoConnect/AutoConnect/AutoConnect/app/src/main/AndroidManifest.xml:7:5-76
+13-->/Users/chucklin/StudioProjects/63_TC22AutoConnect/AutoConnect/AutoConnect/app/src/main/AndroidManifest.xml:7:22-73
+14    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
+14-->/Users/chucklin/StudioProjects/63_TC22AutoConnect/AutoConnect/AutoConnect/app/src/main/AndroidManifest.xml:8:5-73
+14-->/Users/chucklin/StudioProjects/63_TC22AutoConnect/AutoConnect/AutoConnect/app/src/main/AndroidManifest.xml:8:22-70
+15    <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
+15-->/Users/chucklin/StudioProjects/63_TC22AutoConnect/AutoConnect/AutoConnect/app/src/main/AndroidManifest.xml:9:5-78
+15-->/Users/chucklin/StudioProjects/63_TC22AutoConnect/AutoConnect/AutoConnect/app/src/main/AndroidManifest.xml:9:22-75
+16    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+16-->[API3_LIB-release-9.13.2.116.aar] /Users/chucklin/.gradle/caches/8.13/transforms/8cd706d78ab84e9c3963e39446a807c6/transformed/jetified-API3_LIB-release-9.13.2.116/AndroidManifest.xml:11:5-81
+16-->[API3_LIB-release-9.13.2.116.aar] /Users/chucklin/.gradle/caches/8.13/transforms/8cd706d78ab84e9c3963e39446a807c6/transformed/jetified-API3_LIB-release-9.13.2.116/AndroidManifest.xml:11:22-78
+17    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+17-->[API3_LIB-release-9.13.2.116.aar] /Users/chucklin/.gradle/caches/8.13/transforms/8cd706d78ab84e9c3963e39446a807c6/transformed/jetified-API3_LIB-release-9.13.2.116/AndroidManifest.xml:12:5-79
+17-->[API3_LIB-release-9.13.2.116.aar] /Users/chucklin/.gradle/caches/8.13/transforms/8cd706d78ab84e9c3963e39446a807c6/transformed/jetified-API3_LIB-release-9.13.2.116/AndroidManifest.xml:12:22-76
+18
+19    <permission
+19-->[androidx.core:core:1.10.1] /Users/chucklin/.gradle/caches/8.13/transforms/0a369ede7db6862707febe7532ecf96e/transformed/core-1.10.1/AndroidManifest.xml:22:5-24:47
+20        android:name="com.zebra.rfid.demo.sdksample.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+20-->[androidx.core:core:1.10.1] /Users/chucklin/.gradle/caches/8.13/transforms/0a369ede7db6862707febe7532ecf96e/transformed/core-1.10.1/AndroidManifest.xml:23:9-81
+21        android:protectionLevel="signature" />
+21-->[androidx.core:core:1.10.1] /Users/chucklin/.gradle/caches/8.13/transforms/0a369ede7db6862707febe7532ecf96e/transformed/core-1.10.1/AndroidManifest.xml:24:9-44
+22
+23    <uses-permission android:name="com.zebra.rfid.demo.sdksample.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+23-->[androidx.core:core:1.10.1] /Users/chucklin/.gradle/caches/8.13/transforms/0a369ede7db6862707febe7532ecf96e/transformed/core-1.10.1/AndroidManifest.xml:26:5-97
+23-->[androidx.core:core:1.10.1] /Users/chucklin/.gradle/caches/8.13/transforms/0a369ede7db6862707febe7532ecf96e/transformed/core-1.10.1/AndroidManifest.xml:26:22-94
+24
+25    <application
+25-->/Users/chucklin/StudioProjects/63_TC22AutoConnect/AutoConnect/AutoConnect/app/src/main/AndroidManifest.xml:10:5-30:19
+26        android:allowBackup="true"
+26-->/Users/chucklin/StudioProjects/63_TC22AutoConnect/AutoConnect/AutoConnect/app/src/main/AndroidManifest.xml:11:9-35
+27        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+27-->/Users/chucklin/StudioProjects/63_TC22AutoConnect/AutoConnect/AutoConnect/app/src/main/AndroidManifest.xml:16:9-77
+28        android:debuggable="true"
+29        android:extractNativeLibs="false"
+30        android:icon="@mipmap/ic_launcher"
+30-->/Users/chucklin/StudioProjects/63_TC22AutoConnect/AutoConnect/AutoConnect/app/src/main/AndroidManifest.xml:12:9-43
+31        android:label="@string/app_name"
+31-->/Users/chucklin/StudioProjects/63_TC22AutoConnect/AutoConnect/AutoConnect/app/src/main/AndroidManifest.xml:13:9-41
+32        android:roundIcon="@mipmap/ic_launcher_round"
+32-->/Users/chucklin/StudioProjects/63_TC22AutoConnect/AutoConnect/AutoConnect/app/src/main/AndroidManifest.xml:14:9-54
+33        android:supportsRtl="true"
+33-->/Users/chucklin/StudioProjects/63_TC22AutoConnect/AutoConnect/AutoConnect/app/src/main/AndroidManifest.xml:15:9-35
+34        android:testOnly="true"
+35        android:theme="@style/Theme.AppTheme" >
+35-->/Users/chucklin/StudioProjects/63_TC22AutoConnect/AutoConnect/AutoConnect/app/src/main/AndroidManifest.xml:17:9-46
+36        <activity
+36-->/Users/chucklin/StudioProjects/63_TC22AutoConnect/AutoConnect/AutoConnect/app/src/main/AndroidManifest.xml:18:9-29:20
+37            android:name="com.zebra.rfid.demo.sdksample.MainActivity"
+37-->/Users/chucklin/StudioProjects/63_TC22AutoConnect/AutoConnect/AutoConnect/app/src/main/AndroidManifest.xml:19:13-41
+38            android:exported="true"
+38-->/Users/chucklin/StudioProjects/63_TC22AutoConnect/AutoConnect/AutoConnect/app/src/main/AndroidManifest.xml:23:13-36
+39            android:label="@string/app_name"
+39-->/Users/chucklin/StudioProjects/63_TC22AutoConnect/AutoConnect/AutoConnect/app/src/main/AndroidManifest.xml:20:13-45
+40            android:screenOrientation="portrait" >
+40-->/Users/chucklin/StudioProjects/63_TC22AutoConnect/AutoConnect/AutoConnect/app/src/main/AndroidManifest.xml:21:13-49
+41            <intent-filter>
+41-->/Users/chucklin/StudioProjects/63_TC22AutoConnect/AutoConnect/AutoConnect/app/src/main/AndroidManifest.xml:24:13-28:29
+42                <action android:name="android.intent.action.MAIN" />
+42-->/Users/chucklin/StudioProjects/63_TC22AutoConnect/AutoConnect/AutoConnect/app/src/main/AndroidManifest.xml:25:17-69
+42-->/Users/chucklin/StudioProjects/63_TC22AutoConnect/AutoConnect/AutoConnect/app/src/main/AndroidManifest.xml:25:25-66
+43
+44                <category android:name="android.intent.category.LAUNCHER" />
+44-->/Users/chucklin/StudioProjects/63_TC22AutoConnect/AutoConnect/AutoConnect/app/src/main/AndroidManifest.xml:27:17-77
+44-->/Users/chucklin/StudioProjects/63_TC22AutoConnect/AutoConnect/AutoConnect/app/src/main/AndroidManifest.xml:27:27-74
+45            </intent-filter>
+46        </activity>
+47        <activity
+47-->[com.google.android.gms:play-services-base:17.5.0] /Users/chucklin/.gradle/caches/8.13/transforms/ade270946ef27c906c2f1922202bcf9b/transformed/jetified-play-services-base-17.5.0/AndroidManifest.xml:23:9-26:75
+48            android:name="com.google.android.gms.common.api.GoogleApiActivity"
+48-->[com.google.android.gms:play-services-base:17.5.0] /Users/chucklin/.gradle/caches/8.13/transforms/ade270946ef27c906c2f1922202bcf9b/transformed/jetified-play-services-base-17.5.0/AndroidManifest.xml:24:13-79
+49            android:exported="false"
+49-->[com.google.android.gms:play-services-base:17.5.0] /Users/chucklin/.gradle/caches/8.13/transforms/ade270946ef27c906c2f1922202bcf9b/transformed/jetified-play-services-base-17.5.0/AndroidManifest.xml:25:13-37
+50            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+50-->[com.google.android.gms:play-services-base:17.5.0] /Users/chucklin/.gradle/caches/8.13/transforms/ade270946ef27c906c2f1922202bcf9b/transformed/jetified-play-services-base-17.5.0/AndroidManifest.xml:26:13-72
+51
+52        <meta-data
+52-->[com.google.android.gms:play-services-basement:17.5.0] /Users/chucklin/.gradle/caches/8.13/transforms/8c143ef721e292f44e238955e1df8b8e/transformed/jetified-play-services-basement-17.5.0/AndroidManifest.xml:23:9-25:69
+53            android:name="com.google.android.gms.version"
+53-->[com.google.android.gms:play-services-basement:17.5.0] /Users/chucklin/.gradle/caches/8.13/transforms/8c143ef721e292f44e238955e1df8b8e/transformed/jetified-play-services-basement-17.5.0/AndroidManifest.xml:24:13-58
+54            android:value="@integer/google_play_services_version" />
+54-->[com.google.android.gms:play-services-basement:17.5.0] /Users/chucklin/.gradle/caches/8.13/transforms/8c143ef721e292f44e238955e1df8b8e/transformed/jetified-play-services-basement-17.5.0/AndroidManifest.xml:25:13-66
+55    </application>
+56
+57</manifest>

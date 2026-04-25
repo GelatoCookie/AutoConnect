@@ -1,0 +1,45 @@
+flowchart TD
+    Start([App launch]) --> BtPerms{Bluetooth permissions granted?}
+    BtPerms -->|No| RequestBt[Request BLUETOOTH_SCAN and BLUETOOTH_CONNECT]
+    BtPerms -->|Yes| CheckUsbPermission[Request USB permission for Zebra VID 1504 if device is present]
+    RequestBt --> BtGrant{Both granted?}
+    BtGrant -->|No| StopInit[Stop RFID init]
+    BtGrant -->|Yes| CheckUsbPermission
+
+    CheckUsbPermission --> InitSdk[InitRfidSDK]
+    InitSdk --> UsbReaders[Build Readers with SERVICE_USB]
+    UsbReaders --> UsbFound{USB readers available?}
+    UsbFound -->|Yes| SelectUsb[Prefer readerName, else first USB reader]
+    UsbFound -->|No or InvalidUsage| BtReaders[Dispose and rebuild Readers with BLUETOOTH]
+
+    BtReaders --> BtFound{Bluetooth readers available?}
+    BtFound -->|Yes| SelectBt[Prefer readerNamebt or readerNameRfd8500, else first BT reader]
+    BtFound -->|No| NoReader[Show failure status]
+
+    SelectUsb --> Connect[Connect selected reader]
+    SelectBt --> Connect
+    Connect --> ConnectOk{Connected?}
+    ConnectOk -->|No| NoReader
+    ConnectOk -->|Yes| Configure[Configure trigger, tag, disconnect, and inventory events]
+    Configure --> Ready([Connected and ready])
+
+    Ready --> Runtime{Runtime event}
+    Runtime -->|USB attached| UsbAttach[Dismiss dialog and re-init SDK]
+    Runtime -->|USB detached or BT disconnect| Recover[Destroy reader and show reconnect dialog]
+    Runtime -->|Trigger| Inventory[Start or stop inventory]
+    Runtime -->|Tag data| UpdateUi[Append tag data to UI]
+
+    UsbAttach --> InitSdk
+    Inventory --> Ready
+    UpdateUi --> Ready
+
+    Recover --> Choice{User choice}
+    Choice -->|Connect Bluetooth| DelayBt[Schedule BT reconnect after 5 seconds]
+    Choice -->|Wait for USB| WaitUsb[Wait for next USB attach broadcast]
+    DelayBt --> InitSdk
+    WaitUsb --> UsbAttach
+
+    style Start fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
+    style Ready fill:#c8e6c9,stroke:#388e3c,stroke-width:2px
+    style StopInit fill:#ffcdd2,stroke:#d32f2f,stroke-width:2px
+    style NoReader fill:#fff3cd,stroke:#ff9800,stroke-width:2px

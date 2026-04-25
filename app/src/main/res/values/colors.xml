@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary">#2196F3</color>
+    <color name="primary_dark">#1976D2</color>
+    <color name="accent">#00BCD4</color>
+
+    <color name="background">#FFFFFF</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="on_surface">#202124</color>
+    <color name="on_surface_variant">#5F6368</color>
+
+    <color name="status_connected">#4CAF50</color>
+    <color name="status_disconnected">#F44336</color>
+
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+</resources>
